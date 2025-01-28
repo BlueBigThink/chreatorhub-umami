@@ -7,7 +7,7 @@ export default function ({ children, params: { websiteId } }) {
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Umami',
-    default: 'Websites | Umami',
+    template: '%s | Tracker',
+    default: 'Websites | Tracker',
   },
 };
