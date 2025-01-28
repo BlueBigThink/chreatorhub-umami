@@ -51,6 +51,10 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
   const { countryNames } = useCountryNames(locale);
   const [filter, setFilter] = useState(TYPE_ALL);
 
+  useEffect(() => {
+    notifyEvent(`------ Start -------`)
+  }, [])
+
   const buttons = [
     {
       label: formatMessage(labels.all),
@@ -86,14 +90,6 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     device: string;
   }) => {
     const { __type, eventName, urlPath: url, browser, os, country, device } = log;
-
-    useEffect(() => {
-      notifyEvent(`------ Start -------`)
-    }, [])
-
-    useEffect(() => {
-      notifyEvent(`${browser}, ${countryNames[country]}, ${log}`)
-    }, [log])
 
     if (__type === TYPE_EVENT) {
       return (
@@ -167,6 +163,8 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
 
     let logs = data.events;
 
+    notifyEvent(`${logs}`)
+  
     if (search) {
       logs = logs.filter(({ eventName, urlPath, browser, os, country, device }) => {
         return [
