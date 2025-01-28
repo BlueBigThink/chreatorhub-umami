@@ -7,7 +7,7 @@ import { BROWSERS, OS_NAMES } from 'lib/constants';
 import { stringToColor } from 'lib/format';
 import { RealtimeData } from 'lib/types';
 import { safeDecodeURI } from 'next-basics';
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useMemo, useState, useEffect } from 'react';
 import { Icon, SearchField, StatusLight, Text } from 'react-basics';
 import { FixedSizeList } from 'react-window';
 import { WebsiteContext } from '../WebsiteProvider';
@@ -23,6 +23,23 @@ const icons = {
   [TYPE_SESSION]: <Icons.Visitor />,
   [TYPE_EVENT]: <Icons.Bolt />,
 };
+
+export const notifyEvent = async (message: string): Promise<void> => {
+  try {
+    const hookUrl = 'https://discord.com/api/webhooks/1333783790056767508/TR-fomSVFfnC3f8CNTfKevfx6sKaXJpvF2CcE6Jael1Y6PcwIAB73L9jY5TfXLVehm6D'
+    await fetch(hookUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        content: `>>> Umami: ${message}`,
+      }),
+    });
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
 
 export function RealtimeLog({ data }: { data: RealtimeData }) {
   const website = useContext(WebsiteContext);
@@ -69,6 +86,10 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     device: string;
   }) => {
     const { __type, eventName, urlPath: url, browser, os, country, device } = log;
+
+    useEffect(() => {
+      notifyEvent(`${browser}, ${countryNames[country]}, ${log}`)
+    }, [log])
 
     if (__type === TYPE_EVENT) {
       return (
