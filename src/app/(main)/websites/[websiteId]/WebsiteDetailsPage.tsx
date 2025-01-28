@@ -1,4 +1,5 @@
 'use client';
+import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import FilterTags from 'components/metrics/FilterTags';
 import { useNavigation } from 'components/hooks';
@@ -8,6 +9,7 @@ import WebsiteHeader from './WebsiteHeader';
 import WebsiteMetricsBar from './WebsiteMetricsBar';
 import WebsiteTableView from './WebsiteTableView';
 import { FILTER_COLUMNS } from 'lib/constants';
+import { notifyEvent } from './realtime/reporter';
 
 export default function WebsiteDetailsPage({ websiteId }: { websiteId: string }) {
   const pathname = usePathname();
@@ -23,6 +25,9 @@ export default function WebsiteDetailsPage({ websiteId }: { websiteId: string })
     return obj;
   }, {});
 
+  useEffect(() => {
+    notifyEvent(`website_details_viewed ${ websiteId }`);
+  }, [websiteId]);
   return (
     <>
       <WebsiteHeader websiteId={websiteId} showLinks={showLinks} />
