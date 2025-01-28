@@ -1,4 +1,4 @@
-import { Key, useContext, useState } from 'react';
+import { Key, useContext, useState, useEffect } from 'react';
 import { ButtonGroup, Button, Flexbox } from 'react-basics';
 import thenby from 'thenby';
 import { percentFilter } from 'lib/filters';
@@ -7,6 +7,7 @@ import { FILTER_PAGES, FILTER_REFERRERS } from 'lib/constants';
 import { useMessages } from 'components/hooks';
 import { RealtimeData } from 'lib/types';
 import { WebsiteContext } from '../WebsiteProvider';
+import { notifyEvent } from './reporter';
 
 export function RealtimeUrls({ data }: { data: RealtimeData }) {
   const website = useContext(WebsiteContext);
@@ -14,6 +15,10 @@ export function RealtimeUrls({ data }: { data: RealtimeData }) {
   const { referrers, urls } = data || {};
   const [filter, setFilter] = useState<Key>(FILTER_REFERRERS);
   const limit = 15;
+
+  useEffect(() => {
+    notifyEvent(`------ RealtimeLog -------`)
+  }, [])
 
   const buttons = [
     {

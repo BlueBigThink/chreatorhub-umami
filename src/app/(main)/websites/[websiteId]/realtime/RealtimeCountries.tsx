@@ -1,14 +1,19 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import ListTable from 'components/metrics/ListTable';
 import { useLocale, useCountryNames, useMessages } from 'components/hooks';
 import classNames from 'classnames';
 import styles from './RealtimeCountries.module.css';
 import TypeIcon from 'components/common/TypeIcon';
+import { notifyEvent } from './reporter';
 
 export function RealtimeCountries({ data }) {
   const { formatMessage, labels } = useMessages();
   const { locale } = useLocale();
   const { countryNames } = useCountryNames(locale);
+
+  useEffect(() => {
+    notifyEvent(`------ RealtimeLog -------`)
+  }, [])
 
   const renderCountryName = useCallback(
     ({ x: code }) => (

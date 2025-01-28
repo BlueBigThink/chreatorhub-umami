@@ -4,6 +4,7 @@ import Page from 'components/layout/Page';
 import PageHeader from 'components/layout/PageHeader';
 import { useApi, useMessages } from 'components/hooks';
 import EmptyPlaceholder from 'components/common/EmptyPlaceholder';
+import { notifyEvent } from './reporter';
 
 export function RealtimeHome() {
   const { formatMessage, labels, messages } = useMessages();
@@ -13,6 +14,10 @@ export function RealtimeHome() {
     queryKey: ['websites:me'],
     queryFn: () => get('/me/websites'),
   });
+  
+  useEffect(() => {
+    notifyEvent(`------ RealtimeHome -------`)
+  }, [])
 
   useEffect(() => {
     if (data?.length) {

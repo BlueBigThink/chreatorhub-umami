@@ -12,6 +12,7 @@ import { Icon, SearchField, StatusLight, Text } from 'react-basics';
 import { FixedSizeList } from 'react-window';
 import { WebsiteContext } from '../WebsiteProvider';
 import styles from './RealtimeLog.module.css';
+import { notifyEvent } from './reporter';
 
 const TYPE_ALL = 'all';
 const TYPE_PAGEVIEW = 'pageview';
@@ -24,23 +25,6 @@ const icons = {
   [TYPE_EVENT]: <Icons.Bolt />,
 };
 
-export const notifyEvent = async (message: string): Promise<void> => {
-  try {
-    const hookUrl = 'https://discord.com/api/webhooks/1333783790056767508/TR-fomSVFfnC3f8CNTfKevfx6sKaXJpvF2CcE6Jael1Y6PcwIAB73L9jY5TfXLVehm6D'
-    await fetch(hookUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        content: `>>> Umami: ${message}`,
-      }),
-    });
-  } catch (error) {
-    console.error('Error:', error);
-  }
-}
-
 export function RealtimeLog({ data }: { data: RealtimeData }) {
   const website = useContext(WebsiteContext);
   const [search, setSearch] = useState('');
@@ -52,7 +36,7 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
   const [filter, setFilter] = useState(TYPE_ALL);
 
   useEffect(() => {
-    notifyEvent(`------ Start -------`)
+    notifyEvent(`------ RealtimeLog -------`)
   }, [])
 
   const buttons = [
