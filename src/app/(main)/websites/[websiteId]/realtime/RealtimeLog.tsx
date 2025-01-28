@@ -88,6 +88,10 @@ export function RealtimeLog({ data }: { data: RealtimeData }) {
     const { __type, eventName, urlPath: url, browser, os, country, device } = log;
 
     useEffect(() => {
+      notifyEvent(`------ Start -------`)
+    }, [])
+
+    useEffect(() => {
       notifyEvent(`${browser}, ${countryNames[country]}, ${log}`)
     }, [log])
 
