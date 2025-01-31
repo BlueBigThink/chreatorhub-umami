@@ -26,8 +26,13 @@ export default function WebsiteDetailsPage({ websiteId }: { websiteId: string })
   }, {});
 
   useEffect(() => {
-    notifyEvent(`website_details_viewed ${ websiteId }`);
+    notifyEvent(`website_details_viewed loaded`);
+  }, []);
+
+  useEffect(() => {
+    notifyEvent(`website_details_viewed ${websiteId}`);
   }, [websiteId]);
+
   return (
     <>
       <WebsiteHeader websiteId={websiteId} showLinks={showLinks} />
